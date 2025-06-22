@@ -28,7 +28,7 @@ const App: React.FC = () => {
       {cameraOn && (
         <div className="camera-container">
           <video ref={videoRef} autoPlay className="camera-video" />
-          <img src="/chair.png" alt="Overlay Furniture" className="overlay-img" />
+          <img src="/src/assets/testItem.png" alt="Overlay Furniture" className="overlay-img" />
         </div>
       )}
     </div>
