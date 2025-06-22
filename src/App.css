@@ -1,0 +1,43 @@
+
+
+
+.container {
+  background-color: blue;
+  text-align: center;
+  padding: 2rem;
+}
+
+.furniture-container {
+  margin-bottom: 2rem;
+}
+
+.furniture-img {
+  width: 200px;
+  margin-bottom: 1rem;
+}
+
+button {
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.camera-container {
+  position: relative;
+  display: inline-block;
+}
+
+.camera-video {
+  width: 100%;
+  max-width: 400px;
+  border-radius: 10px;
+}
+
+.overlay-img {
+  position: absolute;
+  top: 30%;
+  left: 50%;
+  width: 150px;
+  transform: translate(-50%, -50%);
+  opacity: 0.8;
+}
