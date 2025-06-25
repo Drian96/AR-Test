@@ -80,7 +80,9 @@ const App: React.FC = () => {
     setFacingMode((prev) => (prev === 'environment' ? 'user' : 'environment'));
   };
 
+  // Desktop mouse drag
   const handleMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
+    e.preventDefault();
     setIsDragging(true);
     setOffset({
       x: e.clientX - furniturePosition.x,
@@ -101,6 +103,30 @@ const App: React.FC = () => {
     setIsDragging(false);
   };
 
+  // Mobile touch drag
+  const handleTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
+    const touch = e.touches[0];
+    setIsDragging(true);
+    setOffset({
+      x: touch.clientX - furniturePosition.x,
+      y: touch.clientY - furniturePosition.y,
+    });
+  };
+
+  const handleTouchMove = (e: React.TouchEvent<HTMLDivElement>) => {
+    if (isDragging) {
+      const touch = e.touches[0];
+      setFurniturePosition({
+        x: touch.clientX - offset.x,
+        y: touch.clientY - offset.y,
+      });
+    }
+  };
+
+  const handleTouchEnd = () => {
+    setIsDragging(false);
+  };
+
   const handleResize = (e: React.ChangeEvent<HTMLInputElement>, axis: 'width' | 'height') => {
     const value = parseInt(e.target.value);
     if (axis === 'width') setFurnitureSize((prev) => ({ ...prev, width: value }));
@@ -109,9 +135,9 @@ const App: React.FC = () => {
 
   return (
     <div className="container">
+      <h1>Try This Furniture!</h1>
 
       <div className="furniture-container">
-          <h1>Try This Furniture! #2</h1>
         <img src={testItem} alt="Image" className="furniture-img" />
         <button onClick={startCamera} disabled={showCameraUI}>
           Try
@@ -123,12 +149,15 @@ const App: React.FC = () => {
           className="camera-container"
           onMouseMove={handleMouseMove}
           onMouseUp={handleMouseUp}
+          onTouchMove={handleTouchMove}
+          onTouchEnd={handleTouchEnd}
         >
           <video ref={videoRef} autoPlay playsInline muted className="video-feed" />
 
           <div
             className="furniture-overlay"
             onMouseDown={handleMouseDown}
+            onTouchStart={handleTouchStart}
             style={{
               left: `${furniturePosition.x}px`,
               top: `${furniturePosition.y}px`,
