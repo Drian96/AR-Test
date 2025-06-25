@@ -15,6 +15,9 @@ const App: React.FC = () => {
       const stream = await navigator.mediaDevices.getUserMedia({ video: true });
       if (videoRef.current) {
         videoRef.current.srcObject = stream;
+        videoRef.current.onloadedmetadata = () => {
+          videoRef.current?.play();
+        };
         setIsCameraOn(true);
       }
     } catch (err) {
