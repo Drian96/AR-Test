@@ -1,29 +1,38 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import './App.css';
 import testItem from './assets/testItem.png';
 
 const App: React.FC = () => {
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
-  const [isCameraOn, setIsCameraOn] = useState(false);
+  const [showCameraUI, setShowCameraUI] = useState(false);
   const [furniturePosition, setFurniturePosition] = useState({ x: 50, y: 50 });
   const [isDragging, setIsDragging] = useState(false);
   const [offset, setOffset] = useState({ x: 0, y: 0 });
 
-  const startCamera = async () => {
-    try {
-      const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-      if (videoRef.current) {
-        videoRef.current.srcObject = stream;
-        videoRef.current.onloadedmetadata = () => {
-          videoRef.current?.play();
-        };
-        setIsCameraOn(true);
-      }
-    } catch (err) {
-      console.error('Camera error:', err);
-    }
+  const startCamera = () => {
+    setShowCameraUI(true);
   };
+
+  useEffect(() => {
+    const enableCamera = async () => {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+        if (videoRef.current) {
+          videoRef.current.srcObject = stream;
+          videoRef.current.onloadedmetadata = () => {
+            videoRef.current?.play();
+          };
+        }
+      } catch (err) {
+        console.error('Camera error:', err);
+      }
+    };
+
+    if (showCameraUI) {
+      enableCamera();
+    }
+  }, [showCameraUI]);
 
   const captureImage = () => {
     if (canvasRef.current && videoRef.current) {
@@ -69,21 +78,22 @@ const App: React.FC = () => {
 
   return (
     <div className="container">
-
+      <h1>Try This Furniture!</h1>
 
       <div className="furniture-container">
-        <h1>Try This Furniture!</h1>
         <img src={testItem} alt="Image" className="furniture-img" />
-        <button onClick={startCamera}>TRY!</button>
+        <button onClick={startCamera} disabled={showCameraUI}>
+          Try
+        </button>
       </div>
 
-      {isCameraOn && (
+      {showCameraUI && (
         <div
           className="camera-container"
           onMouseMove={handleMouseMove}
           onMouseUp={handleMouseUp}
         >
-          <video ref={videoRef} autoPlay playsInline className="video-feed" />
+          <video ref={videoRef} autoPlay playsInline muted className="video-feed" />
           <img
             id="furniture-item"
             src={testItem}
