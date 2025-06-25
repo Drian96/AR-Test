@@ -1,15 +1,24 @@
+
+body {
+  margin: 0;
+  padding: 0;
+}
 .container {
   background-color: black;
-  text-align: center;
-  padding: 2rem;
-  flex-direction: column;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .furniture-container {
+  text-align: center;
   background-color: white;
-  margin-bottom: 2rem;
   padding: 1rem;
   border-radius: 8px;
+  max-width: 450px;
+  box-shadow: 0 0 111px #250153;
+
 }
 
 .furniture-img {
@@ -20,9 +29,21 @@
 button {
   padding: 10px 20px;
   font-size: 16px;
+  font-weight: bold;
   cursor: pointer;
   margin: 0.5rem;
+  border: none;
+  border-radius: 5px;
+  background-color: rgb(187, 187, 187);
+  box-shadow: 0 0 5px #250153;
 }
+button:hover {
+  background-color: #585858;
+}
+
+
+
+
 
 .camera-container {
   position: relative;
