@@ -135,9 +135,9 @@ const App: React.FC = () => {
 
   return (
     <div className="container">
-      <h1>Try This Furniture!</h1>
-
+      
       <div className="furniture-container">
+        <h1>Try This Furniture! -overlay fix-</h1>
         <img src={testItem} alt="Image" className="furniture-img" />
         <button onClick={startCamera} disabled={showCameraUI}>
           Try
