@@ -31,8 +31,10 @@ button {
 .camera-video {
   width: 100%;
   max-width: 400px;
-  border-radius: 10px;
+  height: auto;
+  background-color: black; /* Helps see the area */
 }
+
 
 .overlay-img {
   position: absolute;

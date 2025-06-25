@@ -9,8 +9,13 @@ const App: React.FC = () => {
   const startCamera = async () => {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+
       if (videoRef.current) {
         videoRef.current.srcObject = stream;
+
+        // 🔥 Important for mobile browsers
+        await videoRef.current.play();
+
         setCameraOn(true);
       }
     } catch (err) {
@@ -29,7 +34,8 @@ const App: React.FC = () => {
       {cameraOn && (
         <div className="camera-container">
           <video ref={videoRef} autoPlay className="camera-video" />
-          <img src="/src/assets/testItem.png" alt="Overlay Furniture" className="overlay-img" />
+          {/* ✅ Use imported image to avoid path issues */}
+          <img src={testItem} alt="Overlay Furniture" className="overlay-img" />
         </div>
       )}
     </div>
