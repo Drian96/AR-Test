@@ -1,19 +1,19 @@
-
-
-
 .container {
-  background-color: blue;
+  background-color: black;
   text-align: center;
   padding: 2rem;
   flex-direction: column;
 }
 
 .furniture-container {
+  background-color: white;
   margin-bottom: 2rem;
+  padding: 1rem;
+  border-radius: 8px;
 }
 
 .furniture-img {
-  width: 200px;
+  width: 100%;
   margin-bottom: 1rem;
 }
 
@@ -21,6 +21,7 @@ button {
   padding: 10px 20px;
   font-size: 16px;
   cursor: pointer;
+  margin: 0.5rem;
 }
 
 .camera-container {
@@ -28,19 +29,20 @@ button {
   display: inline-block;
 }
 
-.camera-video {
+.video-feed {
   width: 100%;
-  max-width: 400px;
-  height: auto;
-  background-color: black; /* Helps see the area */
+  max-width: 600px;
+  border-radius: 8px;
 }
 
-
-.overlay-img {
+.furniture-overlay {
   position: absolute;
-  top: 30%;
-  left: 50%;
   width: 150px;
-  transform: translate(-50%, -50%);
-  opacity: 0.8;
+  height: 150px;
+  cursor: move;
+  user-select: none;
+}
+
+.capture-btn {
+  margin-top: 10px;
 }
