@@ -94,3 +94,28 @@ button:hover {
 .switch-btn:hover {
   background: #ddd;
 }
+
+/* Resize controls */
+.resize-controls {
+  position: absolute;
+  bottom: 90px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 10px;
+  background: rgba(0, 0, 0, 0.5);
+  padding: 10px;
+  border-radius: 8px;
+  color: white;
+}
+
+.resize-controls label {
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.resize-controls input[type="range"] {
+  width: 100px;
+}

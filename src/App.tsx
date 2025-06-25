@@ -6,7 +6,8 @@ const App: React.FC = () => {
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [showCameraUI, setShowCameraUI] = useState(false);
-  const [furniturePosition, setFurniturePosition] = useState({ x: 50, y: 50 });
+  const [furniturePosition, setFurniturePosition] = useState({ x: 0, y: 0 });
+  const [furnitureSize, setFurnitureSize] = useState({ width: window.innerWidth, height: window.innerHeight });
   const [isDragging, setIsDragging] = useState(false);
   const [offset, setOffset] = useState({ x: 0, y: 0 });
   const [facingMode, setFacingMode] = useState<'environment' | 'user'>('environment');
@@ -49,7 +50,13 @@ const App: React.FC = () => {
 
         const img = document.getElementById('furniture-item') as HTMLImageElement;
         if (img) {
-          ctx.drawImage(img, furniturePosition.x, furniturePosition.y, 150, 150);
+          ctx.drawImage(
+            img,
+            furniturePosition.x,
+            furniturePosition.y,
+            furnitureSize.width,
+            furnitureSize.height
+          );
         }
 
         const link = document.createElement('a');
@@ -73,7 +80,7 @@ const App: React.FC = () => {
     setFacingMode((prev) => (prev === 'environment' ? 'user' : 'environment'));
   };
 
-  const handleMouseDown = (e: React.MouseEvent<HTMLImageElement>) => {
+  const handleMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
     setIsDragging(true);
     setOffset({
       x: e.clientX - furniturePosition.x,
@@ -94,11 +101,17 @@ const App: React.FC = () => {
     setIsDragging(false);
   };
 
+  const handleResize = (e: React.ChangeEvent<HTMLInputElement>, axis: 'width' | 'height') => {
+    const value = parseInt(e.target.value);
+    if (axis === 'width') setFurnitureSize((prev) => ({ ...prev, width: value }));
+    if (axis === 'height') setFurnitureSize((prev) => ({ ...prev, height: value }));
+  };
+
   return (
     <div className="container">
+      <h1>Try This Furniture!</h1>
 
       <div className="furniture-container">
-        <h1>Try This Furniture! #1</h1>
         <img src={testItem} alt="Image" className="furniture-img" />
         <button onClick={startCamera} disabled={showCameraUI}>
           Try
@@ -112,17 +125,25 @@ const App: React.FC = () => {
           onMouseUp={handleMouseUp}
         >
           <video ref={videoRef} autoPlay playsInline muted className="video-feed" />
-          <img
-            id="furniture-item"
-            src={testItem}
-            alt="Furniture"
+
+          <div
             className="furniture-overlay"
             onMouseDown={handleMouseDown}
             style={{
               left: `${furniturePosition.x}px`,
               top: `${furniturePosition.y}px`,
+              width: `${furnitureSize.width}px`,
+              height: `${furnitureSize.height}px`,
             }}
-          />
+          >
+            <img
+              id="furniture-item"
+              src={testItem}
+              alt="Furniture"
+              style={{ width: '100%', height: '100%' }}
+            />
+          </div>
+
           <div className="button-group">
             <button className="capture-btn" onClick={captureImage}>
               Save Image
@@ -131,6 +152,30 @@ const App: React.FC = () => {
               Rotate Camera
             </button>
           </div>
+
+          <div className="resize-controls">
+            <label>
+              Width:
+              <input
+                type="range"
+                min="50"
+                max={window.innerWidth}
+                value={furnitureSize.width}
+                onChange={(e) => handleResize(e, 'width')}
+              />
+            </label>
+            <label>
+              Height:
+              <input
+                type="range"
+                min="50"
+                max={window.innerHeight}
+                value={furnitureSize.height}
+                onChange={(e) => handleResize(e, 'height')}
+              />
+            </label>
+          </div>
+
           <canvas ref={canvasRef} style={{ display: 'none' }} />
         </div>
       )}
