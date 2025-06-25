@@ -9,6 +9,8 @@ const App: React.FC = () => {
   const [furniturePosition, setFurniturePosition] = useState({ x: 50, y: 50 });
   const [isDragging, setIsDragging] = useState(false);
   const [offset, setOffset] = useState({ x: 0, y: 0 });
+  const [facingMode, setFacingMode] = useState<'environment' | 'user'>('environment');
+  const streamRef = useRef<MediaStream | null>(null);
 
   const startCamera = () => {
     setShowCameraUI(true);
@@ -17,7 +19,10 @@ const App: React.FC = () => {
   useEffect(() => {
     const enableCamera = async () => {
       try {
-        const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+        const stream = await navigator.mediaDevices.getUserMedia({
+          video: { facingMode },
+        });
+        streamRef.current = stream;
         if (videoRef.current) {
           videoRef.current.srcObject = stream;
           videoRef.current.onloadedmetadata = () => {
@@ -32,7 +37,7 @@ const App: React.FC = () => {
     if (showCameraUI) {
       enableCamera();
     }
-  }, [showCameraUI]);
+  }, [showCameraUI, facingMode]);
 
   const captureImage = () => {
     if (canvasRef.current && videoRef.current) {
@@ -52,7 +57,20 @@ const App: React.FC = () => {
         link.href = canvasRef.current.toDataURL('image/png');
         link.click();
       }
+
+      stopCamera();
     }
+  };
+
+  const stopCamera = () => {
+    if (streamRef.current) {
+      streamRef.current.getTracks().forEach((track) => track.stop());
+    }
+    setShowCameraUI(false);
+  };
+
+  const switchCamera = () => {
+    setFacingMode((prev) => (prev === 'environment' ? 'user' : 'environment'));
   };
 
   const handleMouseDown = (e: React.MouseEvent<HTMLImageElement>) => {
@@ -78,8 +96,9 @@ const App: React.FC = () => {
 
   return (
     <div className="container">
+      <h1>Try This Furniture!</h1>
+
       <div className="furniture-container">
-          <h1>Try This Furniture!</h1>
         <img src={testItem} alt="Image" className="furniture-img" />
         <button onClick={startCamera} disabled={showCameraUI}>
           Try
@@ -104,9 +123,14 @@ const App: React.FC = () => {
               top: `${furniturePosition.y}px`,
             }}
           />
-          <button className="capture-btn" onClick={captureImage}>
-            Save Image
-          </button>
+          <div className="button-group">
+            <button className="capture-btn" onClick={captureImage}>
+              Save Image
+            </button>
+            <button className="switch-btn" onClick={switchCamera}>
+              Rotate Camera
+            </button>
+          </div>
           <canvas ref={canvasRef} style={{ display: 'none' }} />
         </div>
       )}

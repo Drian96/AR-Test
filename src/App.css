@@ -1,8 +1,8 @@
-
 body {
   margin: 0;
   padding: 0;
 }
+
 .container {
   background-color: black;
   height: 100vh;
@@ -18,7 +18,6 @@ body {
   border-radius: 8px;
   max-width: 450px;
   box-shadow: 0 0 111px #250153;
-
 }
 
 .furniture-img {
@@ -37,23 +36,29 @@ button {
   background-color: rgb(187, 187, 187);
   box-shadow: 0 0 5px #250153;
 }
+
 button:hover {
   background-color: #585858;
 }
 
-
-
-
-
+/* 👇 Full screen camera overlay without affecting your container layout */
 .camera-container {
-  position: relative;
-  display: inline-block;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: black;
+  z-index: 9999;
 }
 
 .video-feed {
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
-  max-width: 600px;
-  border-radius: 8px;
+  height: 100%;
+  object-fit: cover;
 }
 
 .furniture-overlay {
@@ -64,6 +69,28 @@ button:hover {
   user-select: none;
 }
 
-.capture-btn {
-  margin-top: 10px;
+.button-group {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 12px;
+}
+
+.capture-btn,
+.switch-btn {
+  padding: 10px 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  background: white;
+  color: black;
+  box-shadow: 0 0 5px #250153;
+}
+
+.capture-btn:hover,
+.switch-btn:hover {
+  background: #ddd;
 }
