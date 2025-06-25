@@ -5,6 +5,7 @@
   background-color: blue;
   text-align: center;
   padding: 2rem;
+  flex-direction: column;
 }
 
 .furniture-container {

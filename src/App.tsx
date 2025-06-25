@@ -1,5 +1,6 @@
 import React, { useRef, useState } from 'react';
 import './App.css';
+import testItem from './assets/testItem.png';
 
 const App: React.FC = () => {
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -21,7 +22,7 @@ const App: React.FC = () => {
     <div className="container">
       <h1>Try This Furniture!</h1>
       <div className="furniture-container">
-        <img src="/src/assets/testItem.png" alt="Furniture" className="furniture-img" />
+        <img src={testItem} alt="Image" className="furniture-img" />
         <button onClick={startCamera}>Try</button>
       </div>
 
